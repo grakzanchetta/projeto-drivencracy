@@ -1,0 +1,36 @@
+{
+  "name": "projeto-drivencracy",
+  "version": "1.0.0",
+  "description": "Projeto de Recuperação do Módulo 3 da Driven",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/index.js",
+    "dev": "nodemon ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grakzanchetta/projeto-drivencracy.git"
+  },
+  "keywords": [
+    "mongoDB",
+    "backend",
+    "express"
+  ],
+  "author": "Gabriel Rak Zanchetta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/grakzanchetta/projeto-drivencracy/issues"
+  },
+  "homepage": "https://github.com/grakzanchetta/projeto-drivencracy#readme",
+  "dependencies": {
+    "dayjs": "^1.11.3",
+    "db": "^3.3.1",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "joi": "^17.6.0",
+    "mongo": "^0.1.0",
+    "nodemon": "^2.0.19"
+  }
+}
