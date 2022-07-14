@@ -27,12 +27,24 @@ export async function postChoice(request, response) {
         response.status(201).send(`Opção para a enquete de Id ${pollId} e nome ${title} criada!`)
 
     } catch (error) {
-        response.status(500)
+        response.status(500).send(error.message);
     }
-
 }
 
 export async function getChoices(request, response) {
+    const pollIndex = request.params.id;
+
+    try {
+        const poll = await db.collection('polls').findOne({_id: new ObjectId(pollIndex)});
+        if (!poll){
+            return response.status(404).send(`Enquete de id ${pollIndex} inexiste!`);
+        }
+
+        const pollChoices = await db.collection('choices').find({pollId: pollIndex}).toArray();
+        response.send(pollChoices);
+    } catch (error) {
+        response.status(500).send(error.message);
+    }
 
 
 }
