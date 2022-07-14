@@ -24,6 +24,9 @@ export async function postVote (request, response){
     } catch (error) {
         response.status(500).send(error.message);
     }
+}
 
+export async function getResult(){
 
+    
 }
