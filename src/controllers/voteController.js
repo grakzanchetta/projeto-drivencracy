@@ -7,7 +7,7 @@ export async function postVote (request, response){
 
     const voteIndex = request.params.id;
     let timestamp = dayjs().format('YYYY-MM-D HH:mm:ss');
-
+    
     try {
         const choice = await db.collection('choices').findOne({_id: new ObjectId(voteIndex)});
         
@@ -26,7 +26,43 @@ export async function postVote (request, response){
     }
 }
 
-export async function getResult(){
+export async function getResult(request, response){
 
+    const pollIndex = request.params.id;
+    let mostVoted = 0;
+    let votedChoice = 0;
+    const counter = [];
     
+    try {
+        const chosenPoll = await db.collection('polls').findOne({_id: new ObjectId(pollIndex)});
+        const choices = await db.collection('choices').find({ pollId: pollIndex }).toArray();
+        const votes = await db.collection('votes').find({}).toArray();
+
+        if(!chosenPoll){
+            return response.status(404).send('Enquete não existe!')
+        }
+        
+        for (let i = 0; i < choices.length; i++){
+            counter.push(0);
+            for (let j = 0; j < votes.length; j++){
+                if(choices[i]._id == (new ObjectId(votes[j].choiceId).toString())){
+                    counter[i] ++;
+                    if(counter[i] > mostVoted){
+                        votedChoice = i;
+                        mostVoted = counter[i];
+                    }
+                }
+            }
+        }
+       
+        response.send({
+            ...chosenPoll,
+            result: {
+              title: choices[votedChoice].title,
+              votes: Math.max(...counter) 
+            }
+          });    
+    } catch (error) {
+        response.status(500).send(error.message);
+    }     
 }

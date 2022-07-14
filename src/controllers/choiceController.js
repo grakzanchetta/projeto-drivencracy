@@ -1,13 +1,13 @@
 import dayjs from 'dayjs';
 import { ObjectId } from 'mongodb';
+
 import db from '../databases/mongo.js';
 
 export async function postChoice(request, response) {
 
     const { title, pollId } = request.body;
 
-    try {
-     
+    try {     
         const searchPoll = await db.collection('polls').findOne({ _id: new ObjectId(pollId) });
         const searchChoice = await db.collection('choices').findOne({ title, pollId });
 
@@ -25,7 +25,7 @@ export async function postChoice(request, response) {
 
         await db.collection('choices').insertOne({title: title, pollId: pollId });
         response.status(201).send(`Opção para a enquete de Id ${pollId} e nome ${title} criada!`)
-
+    
     } catch (error) {
         response.status(500).send(error.message);
     }
@@ -42,10 +42,9 @@ export async function getChoices(request, response) {
 
         const pollChoices = await db.collection('choices').find({pollId: pollIndex}).toArray();
         response.send(pollChoices);
+    
     } catch (error) {
         response.status(500).send(error.message);
     }
-
-
 }
 
