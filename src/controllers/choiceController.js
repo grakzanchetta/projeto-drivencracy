@@ -9,7 +9,7 @@ export async function postChoice(request, response) {
     try {
      
         const searchPoll = await db.collection('polls').findOne({ _id: new ObjectId(pollId) });
-        const searchChoice = await db.collection('choices').findOne({ title });
+        const searchChoice = await db.collection('choices').findOne({ title, pollId });
 
         if (!searchPoll) {
             return response.status(404).send(`Questionário de id ${pollId} não existe!`);
