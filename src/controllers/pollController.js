@@ -1,6 +1,6 @@
-import db from "../databases/mongo.js";
 import dayjs from "dayjs";
-import { ObjectId } from "mongodb";
+
+import db from "../databases/mongo.js";
 
 export async function postPoll (request, response){
 
