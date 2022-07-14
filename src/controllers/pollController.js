@@ -13,10 +13,9 @@ const { title, expireAt } = request.body;
             return response.status(201).send(`Enquete "${title}", com expiração em ${expirationDate} foi criada!`);    
         }
         await db.collection('polls').insertOne({title, expireAt});
-        return response.status(201).send(`Enquete "${title}", com expiração em ${expireAt} foi criada!`);
+        response.status(201).send(`Enquete "${title}", com expiração em ${expireAt} foi criada!`);
     } catch (error) {
-        console.log(error)
-        return response.status(500).send('Não foi possível publicar a enquete!!!');
+    response.status(500).send(error.message);
     }
 }
 
