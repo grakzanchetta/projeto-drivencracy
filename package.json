@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/grakzanchetta/projeto-drivencracy#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dayjs": "^1.11.3",
     "db": "^3.3.1",
     "dotenv": "^16.0.1",
