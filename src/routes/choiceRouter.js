@@ -7,4 +7,5 @@ const choiceRouter = Router();
 
 choiceRouter.post('/choice', choiceValidate, postChoice);
 
+
 export default choiceRouter;

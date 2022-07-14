@@ -1,39 +1,39 @@
 import dayjs from 'dayjs';
 import { ObjectId } from 'mongodb';
-
 import db from '../databases/mongo.js';
 
-export async function postChoice(request, response){
+export async function postChoice(request, response) {
 
-const { title, pollId } = request.body;
+    const { title, pollId } = request.body;
 
     try {
-        const searchId = ObjectId(pollId);
-        const chosenPoll = await db.collection('polls').findOne({_id: searchId});
+     
+        const searchPoll = await db.collection('polls').findOne({ _id: new ObjectId(pollId) });
+        const searchChoice = await db.collection('choices').findOne({ title });
 
-        if (!chosenPoll){
-            return response.status(404).send(`Enquete com registro ${searchId} não encontrada!`);
+        if (!searchPoll) {
+            return response.status(404).send(`Questionário de id ${pollId} não existe!`);
         }
 
-        if (dayjs() > chosenPoll.expireAt){
-            return response.status(403).send('Esta enquete já foi encerrada!');
+        if (searchChoice) {
+            return response.status(409).send(`Opção de nome ${title} já existe!`);
         }
 
-        const pollChoices = await db.collection('choices').findOne({title});
-        if(pollChoices){
-            return response.status(409).send(`A opção de nome ${title} já foi inscrita!`);
+        if ((dayjs(searchPoll.expireAt).isBefore(dayjs()))) {
+            return response.status(403).send('Enquete já expirada!');
         }
 
-        await db.collection('choices').insertOne({...title, votes: 0});
-
-        return response.status(201).send(`A opção ${title} foi adicionada!`)
-
-
-
-
+        await db.collection('choices').insertOne({title: title, pollId: pollId });
+        response.status(201).send(`Opção para a enquete de Id ${pollId} e nome ${title} criada!`)
 
     } catch (error) {
-        console.log(error);
-        return response.sendStatus(500);
+        response.status(500)
     }
+
 }
+
+export async function getChoices(request, response) {
+
+
+}
+

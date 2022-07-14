@@ -22,16 +22,13 @@ const { title, expireAt } = request.body;
 
 export async function getPolls (request, response){
 
-    const pollsList = await db.collection("polls").find().toArray();
-
     try {
+        const pollsList = await db.collection("polls").find().toArray();
         return response.send(pollsList);
     } catch (error) {
         console.log(error);
         return response.status(500).send('Não foi possível retornar a lista de enquetes!!!')
     }
-
-
 }
 
 
